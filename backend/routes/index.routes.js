@@ -12,8 +12,7 @@ routes.put("/edit/:id", editEmployee);
 routes.delete("/delete/:id", deleteEmployee);
 
 // Define country Routes
-import {getCountries} from "../controller/countryState.js"
+import {getCountries, getStates} from "../controller/countryState.js"
 routes.get("/country", getCountries);
-// routes.post("/state", getStates);
-
+routes.post("/state", getStates);
 export default routes;

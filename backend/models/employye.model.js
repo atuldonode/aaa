@@ -21,10 +21,8 @@ const employeeSchema = Schema({
         type: Number,
         // required: true,
     },
-    dob: { type: Date },
-    img: {
-        type: String
-    },
+    dob: Date,
+    img: String
 }, { timestamps: true });
 
 // mobile validation
