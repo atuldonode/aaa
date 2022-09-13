@@ -1,0 +1,137 @@
+<h1>DEMO</h1>
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Add Employee</button>
+
+<div>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr class="text-center">
+        <th scope="col">Image</th>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">City</th>
+        <th scope="col">DOB</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Delete</th>
+        <th scope="col">edit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let person of employee">
+        <td class="text-center" style="width: 20%;">
+          <img [src]="person.img" alt="image" class="img-fluid img-thumbnail w-50 rounded-circle" />
+        </td>
+
+        <td class="text-center" style="width: 20%;">
+          <h5>{{ person.firstName }}</h5>
+        </td>
+        <td class="text-center" style="width: 20%;">
+          <h5>{{ person.lastName }}</h5>
+        </td>
+        <td class="text-center" style="width: 20%;">
+          <h5>{{ person.city }}</h5>
+        </td>
+        <td class="text-center" style="width: 20%;">
+          <h5>{{ person.dob | date: 'dd/MM/yyyy' }}</h5>
+        </td>
+        <td class="text-center" style="width: 20%;">
+          <h5>{{ person.email }}</h5>
+        </td>
+        <td class="text-center" style="width: 20%;">
+          <h5>{{ person.mobile }}</h5>
+        </td>
+
+        <td class="text-center" style="width: 5%;">
+          <button style="float: right;margin-right: 20px" placement="left" [ngbPopover]="popContent"
+            popoverTitle="Are you sure ?" title="Are you sure ?" (click)="deleteId=person._id"
+            class="btn btn-danger">Delete</button>
+        </td>
+        <td class="text-center" style="width: 5%;">
+          <button (click)="editData(person, content)" class="btn btn-warning">Edit</button>
+        </td>
+
+        <ng-template #popContent>
+          <div class="row">
+            <div class="col-md-6 p-2">
+              <button type="button" (click)="deleteData(person._id)"
+                class="btn btn-block btn-sm btn-success">Yes</button>
+            </div>
+            <div class="col-md-6 p-2">
+              <button type="button" (click)="deleteId=''" class="btn btn-block btn-sm btn-danger">No</button>
+            </div>
+          </div>
+        </ng-template>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="employeeDetails">
+      <div class="container">
+        <h3>Upload Documents</h3>
+        <input type="file" formControlName="img" accept=".png, .jpg, .jpeg" (change)="fileChange($event)" class="form-control">
+        <div class="row">
+          <div class="col-md-6">
+            <label>firstName</label>
+            <input formControlName="firstName" type="text" class="form-control" name="title" required>
+            <span
+              *ngIf="employeeDetails.get('firstName').hasError('required') && employeeDetails.get('firstName').touched"
+              class="text-danger">
+              First Name required
+            </span>
+          </div>
+          <div class="col-md-6">
+            <label>lastName</label>
+            <input formControlName="lastName" type="text" class="form-control" name="title" required>
+
+            <span *ngIf="
+            employeeDetails.get('lastName').hasError('required') &&
+            employeeDetails.get('lastName').touched
+          " class="text-danger">
+              last Name required
+            </span>
+
+          </div>
+          <div class="col-md-6">
+            <label>city</label>
+            <input formControlName="city" type="text" class="form-control" name="blog" required>
+          </div>
+          <div class="col-md-6">
+            <label>DOB</label>
+            <input formControlName="dob" type="date" class="form-control" name="author" required>
+          </div>
+          <div class="col-md-6">
+            <label>Email</label>
+            <input formControlName="email" type="email" class="form-control">
+
+            <span class="text-danger"
+              *ngIf="employeeDetails.controls['email'].hasError('required') && (employeeDetails.controls['email'].dirty || employeeDetails.controls['email'].touched)">This
+              field is required</span>
+            <span class="text-danger"
+              *ngIf="employeeDetails.controls['email'].hasError('pattern') && (employeeDetails.controls['email'].dirty || employeeDetails.controls['email'].touched)">Please
+              enter valid email</span>
+
+          </div>
+          <div class="col-md-6">
+            <label>Mobile</label>
+            <input formControlName="mobile" type="text" class="form-control" name="type" required>
+            <span *ngIf="employeeDetails.controls.mobile.errors" class="text-danger">
+              {{employeeDetails.controls.mobile.errors?.onlyDigit?.message}}
+            </span>
+          </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer"> <button type="button" class="btn btn-outline-dark" [disabled]="employeeDetails.invalid"
+      (click)="submitData();modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
