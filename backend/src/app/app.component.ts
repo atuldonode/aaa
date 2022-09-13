@@ -28,7 +28,7 @@ export class AppComponent {
   isImageSaved: any;
   deleteId: any
 
-  constructor(private http: HttpClient, private modalService: NgbModal, public fb: FormBuilder,) {
+  constructor(private http: HttpClient, private modalService: NgbModal, public fb: FormBuilder) {
     this.employeeDetails = this.fb.group({
       img: [''],
       firstName: [''],
@@ -41,12 +41,7 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    ReactiveFormConfig.set({ "validationMessage": { "onlyDigit": "Enter Valid mobile number" } });
-    ReactiveFormConfig.set({
-      "validationMessage": {
-        "email": "Invalid email format",
-      }
-    });
+    ReactiveFormConfig.set({ "validationMessage": { "onlyDigit": "Enter Valid mobile number" } });8
     this.employeeDetails.valueChanges.subscribe((x: any) => {
       this.image = x;
     })
@@ -86,6 +81,7 @@ export class AppComponent {
 
   submitData() {
     this.submitted = true;
+    //edit submit
     if (this.updateData) {
       this.employeeDetails.value.img = this.cardImageBase64;
       this.http.put(this.dataUrl + '/edit/' + this.editID, this.employeeDetails.value).subscribe((response: any) => {
@@ -94,13 +90,16 @@ export class AppComponent {
       })
     }
     else {
+      // submit new data
       this.employeeDetails.value.img = this.cardImageBase64;
+      console.log("this.employeeDetails.value", this.employeeDetails.value);
+      
       this.http.post(this.dataUrl + '/create/', this.employeeDetails.value).subscribe((response: any) => {
         this.employeeDetails = this.fb.group({
           img: [''],
           firstName: [''],
           lastName: [''],
-          dob: [''],
+          dob:[''],
           mobile: [''],
           email: [''],
           city: ['']

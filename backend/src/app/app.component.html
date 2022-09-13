@@ -32,7 +32,7 @@
           <h5>{{ person.city }}</h5>
         </td>
         <td class="text-center" style="width: 20%;">
-          <h5>{{ person.dob | date }}</h5>
+          <h5>{{ person.dob | date: 'dd/MM/yyyy' }}</h5>
         </td>
         <td class="text-center" style="width: 20%;">
           <h5>{{ person.email }}</h5>
@@ -76,7 +76,7 @@
     <form [formGroup]="employeeDetails">
       <div class="container">
         <h3>Upload Documents</h3>
-        <input type="file" formControlName="img" (change)="fileChange($event)" class="form-control">
+        <input type="file" formControlName="img" accept=".png, .jpg, .jpeg" (change)="fileChange($event)" class="form-control">
         <div class="row">
           <div class="col-md-6">
             <label>firstName</label>
@@ -105,14 +105,18 @@
           </div>
           <div class="col-md-6">
             <label>DOB</label>
-            <input formControlName="dob" type="text" class="form-control" name="author" required>
+            <input formControlName="dob" type="date" class="form-control" name="author" required>
           </div>
           <div class="col-md-6">
             <label>Email</label>
-            <input formControlName="email" type="email" class="form-control" >
-           
-            <span class="text-danger" *ngIf="employeeDetails.controls['email'].hasError('required') && (employeeDetails.controls['email'].dirty || employeeDetails.controls['email'].touched)">This field is required</span>
-            <span class="text-danger" *ngIf="employeeDetails.controls['email'].hasError('pattern') && (employeeDetails.controls['email'].dirty || employeeDetails.controls['email'].touched)">Please enter valid email</span>
+            <input formControlName="email" type="email" class="form-control">
+
+            <span class="text-danger"
+              *ngIf="employeeDetails.controls['email'].hasError('required') && (employeeDetails.controls['email'].dirty || employeeDetails.controls['email'].touched)">This
+              field is required</span>
+            <span class="text-danger"
+              *ngIf="employeeDetails.controls['email'].hasError('pattern') && (employeeDetails.controls['email'].dirty || employeeDetails.controls['email'].touched)">Please
+              enter valid email</span>
 
           </div>
           <div class="col-md-6">
