@@ -50,3 +50,61 @@ export const deleteEmployee = async (req, res) => {
         res.status(400).send(error)
     }
 };
+
+// export const filterData = async (req, res) => {
+//     try {
+//         const filters = req.query;
+//         const data = await employeeModel.find().sort({name:1});
+//         const filteredUsers = data.filter(user => {
+//             let isValid = true;
+//             for (let key in filters) {
+//                 console.log(key, user[key], filters[key]);
+//                 isValid = isValid && user[key] == filters[key];
+//             }
+//             return isValid;
+//         });
+//         res.send(filteredUsers);
+//     } catch (error) {
+//         console.log(error);
+//         res.send(error)
+//     }
+// };
+
+
+export const filterData = async (req, res) => {
+try {
+    const filter = req.body.query;
+    let where = {};
+    if (filter.name) {
+        where.name = { $regex: filter.name, $options: "i" }
+    }
+    let query = employeeModel.find(where);
+    const page = parseInt(req.body.page) || 1;
+    const pageSize = parseInt(req.body.limit) || 10;
+    const skip = (page - 1) * pageSize;
+    const total = await employeeModel.countDocuments(where);
+    const pages = Math.ceil(total / pageSize);
+
+    if (page > pages) {
+        return res.status(404).json({
+            status: "fail",
+            message: "No page found",
+        });
+    }
+    result = await query.skip(skip).limit(pageSize);
+    res.json({
+        status: "success",
+        filter,
+        count: result.length,
+        page,
+        pages,
+        data: result
+    });
+} catch (error) {
+    console.log(error);
+    res.status(400).json({
+        status: "error",
+        message: "Server Error",
+    });
+  }
+};
