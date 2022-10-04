@@ -10,7 +10,7 @@ routes.post("/create", upload, createEmployee);
 routes.get("/allList", employeeList);
 routes.put("/edit/:id", editEmployee);
 routes.delete("/delete/:id", deleteEmployee);
-routes.post("/filter", filterData);
+routes.get("/filter", filterData);
 
 // Define country Routes
 import {getCountries, getStates} from "../controller/countryState.js"

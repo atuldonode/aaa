@@ -123,14 +123,14 @@ export const deleteEmployee = async (req, res) => {
 
 export const filterData = async (req, res) => {
     try {
-        const filter = req.body.query;
+        const filter = req.query;
         let where = {};
         if (filter.city) {
             where.city = { $regex: filter.city, $options: "i" }
         }
         let query = employeeModel.find(where);
-        const page = parseInt(req.body.page) || 1;
-        const pageSize = parseInt(req.body.limit) || 10;
+        const page =  1;
+        const pageSize =  10;
         const skip = (page - 1) * pageSize;
         const total = await employeeModel.countDocuments(where);
         const pages = Math.ceil(total / pageSize);
